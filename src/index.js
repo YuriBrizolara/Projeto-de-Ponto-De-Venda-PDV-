@@ -9,6 +9,6 @@ app.use(cors())
 app.use(express.json())
 app.use(rotas)
 
-//app.listen(process.env.PORT) - não funciona por enquanto
+app.listen(process.env.PORT)
 
-app.listen(3000);
+
