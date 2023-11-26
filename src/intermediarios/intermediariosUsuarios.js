@@ -1,4 +1,4 @@
-const conexao = require("../conexão")
+const knex = require('../conexão');
 const jwt = require('jsonwebtoken');
 
 const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
@@ -28,7 +28,7 @@ const verificarToken = async (req, res, next) =>{
 	const token= authorization.split(' ')[1]
 	try {
 		const {id} = jwt.verify(token,process.env.CHAVE_PRIVADA_JWT);
-		const usuarioEncontrado = await conexao('usuarios').where({ id }).first()
+		const usuarioEncontrado = await knex('usuarios').where({ id }).first()
 		if (!usuarioEncontrado) {
 			return res.status(404).json('Usuario não encontrado')
 		}
