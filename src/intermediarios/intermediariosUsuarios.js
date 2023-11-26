@@ -1,4 +1,5 @@
-const { array } = require("joi")
+const knex = require('../conexão');
+const jwt = require('jsonwebtoken');
 
 const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
 	try {
@@ -35,9 +36,9 @@ const verificarToken = async (req, res, next) =>{
 		req.usuario = usuario
 		next()
 	} catch (error) {
+        console.log(error.message);
 		return res.status(401).json({mensagem: 'Usuario não autorizado'})
 	}
-	next();
 }
 module.exports = {
     validarDadosCorpo,
