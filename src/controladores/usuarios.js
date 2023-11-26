@@ -24,10 +24,9 @@ const cadastrarUsuario= async(req,res) =>{
     } catch (error) {
         return res.status(500).json(error.message);
     }
-    res.status(200).json(categorias)
 }
 const detalharUsuario= async(req,res) =>{
-
+    return res.status(200).json(req.usuario);
 }
 const editarUsuario= async(req,res) =>{
 
