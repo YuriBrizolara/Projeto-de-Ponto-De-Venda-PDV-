@@ -10,7 +10,7 @@ rotas.get('/categoria',listarCategorias);
 rotas.post('/usuario',validarDadosCorpo(schemaUsuario), cadastrarUsuario);
 rotas.post('/login',validacaoGenerica(['email','senha']),efetuarLogin);
 rotas.use(verificarToken);
-rotas.put('/usuario',editarUsuario);
+rotas.put('/usuario', validarDadosCorpo(schemaUsuario), editarUsuario);
 rotas.get('/usuario',detalharUsuario);
 
 
