@@ -37,7 +37,6 @@ const verificarToken = async (req, res, next) => {
         req.usuario = usuario;
         next();
     } catch (error) {
-        console.log(error.message);
         return res.status(401).json({ mensagem: 'Usuario não autorizado' });
     }
 };
