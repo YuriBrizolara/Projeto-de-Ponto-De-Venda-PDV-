@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const schemaUsuario = joi.object({
+const schemaCadastroUsuario = joi.object({
     nome: joi.string().required().messages({
         'any.required': 'O campo nome é obrigatório',
         'string.base': 'O campo nome é obrigatório',
@@ -18,8 +18,8 @@ const schemaUsuario = joi.object({
         'any.required': 'O campo senha é obrigatório',
         'string.base': 'O campo senha é obrigatório',
         'string.empty': 'O campo senha é obrigatório',
-        'string.min': 'A senha precisa conter, no mínimo, 8 caracteres',
+        'string.min': 'A senha precisa conter, no mínimo, 6 caracteres',
     }),
 });
 
-module.exports = schemaUsuario;
+module.exports = schemaCadastroUsuario;

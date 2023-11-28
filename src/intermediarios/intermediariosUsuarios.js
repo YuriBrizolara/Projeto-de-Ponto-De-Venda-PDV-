@@ -1,7 +1,7 @@
 const knex = require('../conexão');
 const jwt = require('jsonwebtoken');
 
-const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
+const validarDados = (joiSchema) => async (req, res, next) => {
     try {
         await joiSchema.validateAsync(req.body);
 
@@ -10,17 +10,7 @@ const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
         return res.status(400).json({ mensagem: error.message });
     }
 };
-// aplicar validação generica como primaria e remover validarDadosCorpo
-const validacaoGenerica = (arrayPropriedades) => (req, res, next) => {
-    for (const item of arrayPropriedades) {
-        if (!req.body[item]) {
-            return res
-                .status(400)
-                .json({ mensagem: `O campo ${item} é obrigatório` });
-        }
-    }
-    next();
-};
+
 const verificarToken = async (req, res, next) => {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -37,12 +27,10 @@ const verificarToken = async (req, res, next) => {
         req.usuario = usuario;
         next();
     } catch (error) {
-        console.log(error.message);
         return res.status(401).json({ mensagem: 'Usuario não autorizado' });
     }
 };
 module.exports = {
-    validarDadosCorpo,
-    validacaoGenerica,
+    validarDados,
     verificarToken,
 };
