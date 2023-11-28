@@ -10,17 +10,7 @@ const validarDados = (joiSchema) => async (req, res, next) => {
         return res.status(400).json({ mensagem: error.message });
     }
 };
-// aplicar validação generica como primaria e remover validarDados
-const validacaoGenerica = (arrayPropriedades) => (req, res, next) => {
-    for (const item of arrayPropriedades) {
-        if (!req.body[item]) {
-            return res
-                .status(400)
-                .json({ mensagem: `O campo ${item} é obrigatório` });
-        }
-    }
-    next();
-};
+
 const verificarToken = async (req, res, next) => {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -42,6 +32,5 @@ const verificarToken = async (req, res, next) => {
 };
 module.exports = {
     validarDados,
-    validacaoGenerica,
     verificarToken,
 };

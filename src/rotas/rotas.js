@@ -8,7 +8,6 @@ const {
 const efetuarLogin = require('../controladores/login');
 const {
     validarDados,
-    validacaoGenerica,
     verificarToken,
     validarDados,
 } = require('../intermediarios/intermediariosUsuarios');
