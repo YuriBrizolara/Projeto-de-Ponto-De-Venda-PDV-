@@ -1,7 +1,7 @@
 const knex = require('../conexão');
 const jwt = require('jsonwebtoken');
 
-const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
+const validarDados = (joiSchema) => async (req, res, next) => {
     try {
         await joiSchema.validateAsync(req.body);
 
@@ -10,7 +10,7 @@ const validarDadosCorpo = (joiSchema) => async (req, res, next) => {
         return res.status(400).json({ mensagem: error.message });
     }
 };
-// aplicar validação generica como primaria e remover validarDadosCorpo
+// aplicar validação generica como primaria e remover validarDados
 const validacaoGenerica = (arrayPropriedades) => (req, res, next) => {
     for (const item of arrayPropriedades) {
         if (!req.body[item]) {
@@ -41,7 +41,7 @@ const verificarToken = async (req, res, next) => {
     }
 };
 module.exports = {
-    validarDadosCorpo,
+    validarDados,
     validacaoGenerica,
     verificarToken,
 };

@@ -5,9 +5,12 @@ const efetuarLogin = async (req, res) => {
     const { email, senha } = req.body;
     try {
         const usuario = await knex('usuarios').where({ email }).first();
+        if (!usuario) {
+            return res.status(400).json('Usuário não encontrado');
+        }
         const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
         if (!senhaCorreta) {
-            return res.status(400).json('Email e senha não confere');
+            return res.status(400).json('Email ou senha não confere');
         }
         const token = jwt.sign(
             { id: usuario.id },
