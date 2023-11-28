@@ -9,7 +9,6 @@ const efetuarLogin = require('../controladores/login');
 const {
     validarDados,
     verificarToken,
-    validarDados,
 } = require('../intermediarios/intermediariosUsuarios');
 const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
