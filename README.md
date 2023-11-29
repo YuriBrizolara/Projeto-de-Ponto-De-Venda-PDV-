@@ -21,8 +21,7 @@ Para interagir com a API, siga as instruções abaixo:
 
 ### Acesso à API
 
-O acesso à API é feito através do seguinte link: [Link da API](https://motionless-blue-chinchilla.cyclic.app).
-
+O acesso à API deve ser feito através de framework de envio de requisições como [insomnia](https://insomnia.rest/download) ou [postman](https://www.postman.com/downloads/).
 Certifique-se de incluir os parâmetros de rota conforme descrito para cada endpoint.
 
 ```plaintext
@@ -32,6 +31,8 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 #### Listar categorias
 
 #### `GET` `/categoria`
+
+<https://motionless-blue-chinchilla.cyclic.app/categoria>
 
 <img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/18717b83-759f-484a-900c-bf9c498491c6" width="1500" />
 
@@ -44,6 +45,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 #### Cadastra o usuário no banco de dados e retorna a confirmação
 
 #### `POST` `/usuario`
+<https://motionless-blue-chinchilla.cyclic.app/usuario>
 
 <img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/39090d01-6945-47ab-b7d0-1d8ac1cdd14a" width="1500" />
 
@@ -54,6 +56,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 #### Efetua o login do usuário e retorna o token de autenticação
 
 #### `POST` `/login`
+<https://motionless-blue-chinchilla.cyclic.app/login>
 
 <img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/82dc73bd-21ed-4d0f-a05a-423a276bfc7b" width="1500" />
 
@@ -64,6 +67,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 #### Detalhar informações do usuário
 
 #### `GET` `/usuario`
+<https://motionless-blue-chinchilla.cyclic.app/usuario>
 
 <img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/55bb4af2-a5b1-4d71-b7de-2c5b32f695bd" width="1500" />
 
@@ -74,6 +78,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 #### Retorna todos os itens
 
 #### `PUT` `/usuario`
+<https://motionless-blue-chinchilla.cyclic.app/usuario>
 
 <img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/61636d2e-b8ef-4087-b3de-1034d8e62278" width="1500" />
 
