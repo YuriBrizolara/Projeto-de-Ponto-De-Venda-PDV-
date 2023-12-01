@@ -29,7 +29,7 @@ rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.get('/usuario', detalharUsuario);
 rotas.get('/produto', listarProdutos);
 rotas.get('/produto/:id', detalharProduto);
-rotas.get('/produto/:id', excluirProduto);
+rotas.delete('/produto/:id', excluirProduto);
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
 
 module.exports = rotas;
