@@ -23,7 +23,7 @@ rotas.post('/login', validarDados(schemaLogin), efetuarLogin);
 rotas.use(verificarToken);
 rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.get('/usuario', detalharUsuario);
-rotas.get('/produto/:id', excluirProduto);
+rotas.delete('/produto/:id', excluirProduto);
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
 
 module.exports = rotas;
