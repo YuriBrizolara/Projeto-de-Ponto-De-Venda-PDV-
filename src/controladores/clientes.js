@@ -47,8 +47,8 @@ const listarClientes = async (req,res) => {
 const detalharCliente = async (req,res) => {
     const { id } = req.params
     try {
-        const clienteEncontrado = knex('clientes').select('*').where('id',id);
-        if (!clienteEncontrado) {
+        const clienteEncontrado = await knex('clientes').select('*').where('id',id);
+        if (clienteEncontrado.length === 0 ) {
             return res.status(404).json({mensagem:'cliente não encontrado'})
         }
         return res.status(200).json(clienteEncontrado);
