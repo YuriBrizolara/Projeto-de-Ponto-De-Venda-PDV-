@@ -12,7 +12,11 @@ const {
 } = require('../intermediarios/intermediariosUsuarios');
 const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
-const { excluirProduto } = require('../controladores/produtos');
+const {
+    excluirProduto,
+    listarProdutos,
+    detalharProduto,
+} = require('../controladores/produtos');
 const schemaCliente = require('../validacoes/schemaCliente');
 const { editarCliente } = require('../controladores/clientes');
 
@@ -23,6 +27,8 @@ rotas.post('/login', validarDados(schemaLogin), efetuarLogin);
 rotas.use(verificarToken);
 rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.get('/usuario', detalharUsuario);
+rotas.get('/produto', listarProdutos);
+rotas.get('/produto/:id', detalharProduto);
 rotas.get('/produto/:id', excluirProduto);
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
 
