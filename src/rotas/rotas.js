@@ -18,7 +18,7 @@ const {
     detalharProduto,
 } = require('../controladores/produtos');
 const schemaCliente = require('../validacoes/schemaCliente');
-const { editarCliente } = require('../controladores/clientes');
+const { editarCliente, listarClientes, detalharCliente } = require('../controladores/clientes');
 
 const rotas = express.Router();
 rotas.get('/categoria', listarCategorias);
@@ -31,5 +31,7 @@ rotas.get('/produto', listarProdutos);
 rotas.get('/produto/:id', detalharProduto);
 rotas.delete('/produto/:id', excluirProduto);
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
+rotas.get('/cliente',listarClientes);
+rotas.get('/cliente/:id',detalharCliente);
 
 module.exports = rotas;
