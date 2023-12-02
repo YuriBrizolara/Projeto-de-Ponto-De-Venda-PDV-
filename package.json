@@ -1,0 +1,13 @@
+{
+  "name": "forestkey",
+  "version": "1.0.0",
+  "description": "Este projeto consiste em uma API (Interface de Programação de Aplicações) desenvolvida para fornecer funcionalidades relacionadas a um ponto de venda. O sistema inclui recursos de cadastro de usuários, autenticação, gerenciamento de perfil e outras operações essenciais.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
