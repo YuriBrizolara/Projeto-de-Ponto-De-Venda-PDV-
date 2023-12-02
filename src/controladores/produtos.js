@@ -1,7 +1,6 @@
 const knex = require('../conexão');
-const {
-    encontrarProduto,
-} = require('../intermediarios/intermediariosProdutos');
+const { encontrarProduto } = require('../utilitarios/utilitarioProduto');
+
 
 const listarProdutos = async (req, res) => {
     const { categoria_id } = req.query;
@@ -38,16 +37,18 @@ const listarProdutos = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+
 const detalharProduto = async (req, res) => {
 
     try {
-        const produtoEncontrado = await encontrarProduto();
+        const produtoEncontrado = await encontrarProduto(req);
         return res.status(200).json(produtoEncontrado);
 
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
     try {
