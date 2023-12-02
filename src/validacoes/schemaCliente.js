@@ -14,12 +14,20 @@ const schemaCliente = joi.object({
         'string.empty': 'O campo email é obrigatório',
     }),
 
-    cpf: joi.number().min(11).required().integer().messages({
+    cpf: joi.string().min(11).max(11).required().messages({
         'any.required': 'O campo cpf é obrigatório',
-        'number.base': 'O campo cpf é obrigatório',
-        'number.integer':
+        'string.base': 'O campo cpf é obrigatório',
+        'string.max':
+            'Insira um numero de cpf valido contendo 11 digitos e apenas numeros.',
+        'string.min':
             'Insira um numero de cpf valido contendo 11 digitos e apenas numeros.',
     }),
+    cep: joi.string().allow(null, ""),
+    rua: joi.string().allow(null, ""),
+    numero: joi.string().allow(null, ""),
+    bairro: joi.string().allow(null, ""),
+    cidade: joi.string().allow(null, ""),
+    estado: joi.string().allow(null, "")
 });
 
 module.exports = schemaCliente;
