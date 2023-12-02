@@ -35,7 +35,6 @@ const listarProdutos = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
-
 const detalharProduto = async (req, res) => {
     const { id } = req.params;
 
@@ -52,7 +51,6 @@ const detalharProduto = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
-
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
     try {
@@ -71,5 +69,28 @@ const excluirProduto = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+const cadastrarProduto = async (req, res) => {
+    const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
+    try {
+        const novoProduto = await knex('produtos').insert({
+            descricao,
+            quantidade_estoque,
+            valor,
+            categoria_id
+        }).returning("*");
 
-module.exports = { listarProdutos, detalharProduto, excluirProduto };
+        return res.status(201).json();
+
+    } catch (error) {
+        return res.status(400).json('Erro ao efetuar o cadastro do Produto');
+    }
+
+}
+
+
+module.exports = {
+    listarProdutos,
+    detalharProduto,
+    excluirProduto,
+    cadastrarProduto
+};
