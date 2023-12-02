@@ -23,6 +23,7 @@ const editarCliente = async (req, res) => {
                 email,
                 cpf,
             })
+            .where('id', id)
             .returning(['nome', 'email', 'cpf']);
 
         if (atualizarCliente.length > 0) {
@@ -44,11 +45,13 @@ const listarClientes = async (req, res) => {
     }
 };
 const detalharCliente = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
     try {
-        const clienteEncontrado = await knex('clientes').select('*').where('id', id);
+        const clienteEncontrado = await knex('clientes')
+            .select('*')
+            .where('id', id);
         if (clienteEncontrado.length === 0) {
-            return res.status(404).json({ mensagem: 'cliente não encontrado' })
+            return res.status(404).json({ mensagem: 'cliente não encontrado' });
         }
         return res.status(200).json(clienteEncontrado);
     } catch (error) {
@@ -57,31 +60,32 @@ const detalharCliente = async (req, res) => {
     }
 };
 const cadastrarCliente = async (req, res) => {
-    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;
+    const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } =
+        req.body;
     try {
-        const novoCliente = await knex('clientes').insert({
-            nome,
-            email,
-            cpf,
-            cep,
-            rua,
-            numero,
-            bairro,
-            cidade,
-            estado
-        }).returning("*");
+        const novoCliente = await knex('clientes')
+            .insert({
+                nome,
+                email,
+                cpf,
+                cep,
+                rua,
+                numero,
+                bairro,
+                cidade,
+                estado,
+            })
+            .returning('*');
 
         return res.status(201).json();
-
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do cliente');
     }
-
-}
+};
 
 module.exports = {
     editarCliente,
     listarClientes,
     detalharCliente,
-    cadastrarCliente
+    cadastrarCliente,
 };
