@@ -9,7 +9,7 @@ const editarCliente = async (req, res) => {
             .where(function () {
                 this.where('email', email).orWhere('cpf', cpf);
             })
-            .andWhereNot('id', id);
+            .whereNot('id', id);
 
         if (clientesComMesmoEmailOuCpf.length > 0) {
             return res
