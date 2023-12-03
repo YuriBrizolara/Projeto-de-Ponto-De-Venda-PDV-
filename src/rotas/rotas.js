@@ -33,25 +33,24 @@ const { validarDados, verificarToken} = require('../intermediarios/validacao');
 
 const rotas = express.Router();
 
-rotas.get('/categoria', listarCategorias);
 rotas.post('/usuario', validarDados(schemaCadastroUsuario), cadastrarUsuario);
 rotas.post('/login', validarDados(schemaLogin), efetuarLogin);
+rotas.get('/categoria', listarCategorias);
 
 rotas.use(verificarToken);
 
 rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
-rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
-rotas.put('/produto/:id', validarDados(schemaProduto), editarProduto);
-
 rotas.get('/usuario', detalharUsuario);
-rotas.get('/produto', listarProdutos);
-rotas.get('/produto/:id', detalharProduto);
-rotas.get('/cliente', listarClientes);
-rotas.get('/cliente/:id', detalharCliente);
 
-rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
+rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
+rotas.get('/cliente/:id', detalharCliente);
+rotas.get('/cliente', listarClientes);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
+rotas.put('/produto/:id', validarDados(schemaProduto), editarProduto);
+rotas.get('/produto/:id', detalharProduto);
+rotas.get('/produto', listarProdutos);
+rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
 rotas.delete('/produto/:id', excluirProduto);
 
 module.exports = rotas;
