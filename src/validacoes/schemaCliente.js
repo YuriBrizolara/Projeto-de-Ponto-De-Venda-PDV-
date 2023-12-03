@@ -17,6 +17,7 @@ const schemaCliente = joi.object({
     cpf: joi.string().min(11).max(11).required().messages({
         'any.required': 'O campo cpf é obrigatório',
         'string.base': 'O campo cpf é obrigatório',
+        'string.empty': 'O campo cpf é obrigatório',
         'string.max':
             'Insira um numero de cpf valido contendo 11 digitos e apenas numeros.',
         'string.min':
