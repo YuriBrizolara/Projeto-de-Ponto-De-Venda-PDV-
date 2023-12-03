@@ -12,7 +12,8 @@ const {
     excluirProduto,
     listarProdutos,
     detalharProduto,
-    cadastrarProduto
+    cadastrarProduto,
+    editarProduto
 } = require('../controladores/produtos');
 const {
     editarCliente,
@@ -47,6 +48,7 @@ rotas.use(verificarToken);
 
 rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
+rotas.put('/produto/:id',validarCamposProduto(schemaProduto), editarProduto);
 
 
 rotas.get('/usuario', detalharUsuario);
