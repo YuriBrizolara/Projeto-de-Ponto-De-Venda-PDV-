@@ -42,7 +42,6 @@ const detalharCliente = async (req, res) => {
         }
         return res.status(200).json(clienteEncontrado);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ mensagem: 'Erro ao detalhar o cliente' });
     }
 };
@@ -64,7 +63,7 @@ const cadastrarCliente = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(201).json();
+        return res.status(201).json(novoCliente);
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do cliente');
     }

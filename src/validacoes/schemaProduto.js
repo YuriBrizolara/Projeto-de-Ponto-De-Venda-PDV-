@@ -17,7 +17,7 @@ const schemaProduto = joi.object({
         'any.required': 'O campo valor é obrigatório',
         'number.base': 'O campo valor é obrigatório',
         'number.integer':
-            'Insira um valor valido',
+            'Insira um valor em centavos e sem vírgula',
     }),
     categoria_id: joi.number().required().integer().messages({
         'any.required': 'O campo Id da categoria é obrigatório',

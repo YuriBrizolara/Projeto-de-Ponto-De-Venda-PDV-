@@ -23,6 +23,7 @@ const verificarToken = async (req, res, next) => {
 
 const validarDados = (schema) => async (req, res, next) => {
     const { email, cpf, categoria_id } = req.body;
+    const { id } = req.params;
 
     try {
         await schema.validateAsync(req.body);
@@ -55,7 +56,9 @@ const validarDados = (schema) => async (req, res, next) => {
         }
         next();
     } catch (error) {
-        return res.status(400).json({ mensagem: error.message });
+        return res.status(500).json({
+            mensagem: 'Erro interno do servidor!',
+        });
     }
 };
 
