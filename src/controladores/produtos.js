@@ -22,7 +22,7 @@ const listarProdutos = async (req, res) => {
 
         const produtoCategoria = await knex('produtos')
             .select('*')
-            .where('categoria_id', categoria_id);
+            .where({ categoria_id });
 
         if (produtoCategoria.length === 0) {
             return res.status(404).json({
@@ -39,7 +39,7 @@ const listarProdutos = async (req, res) => {
 
 const detalharProduto = async (req, res) => {
     try {
-        const produtoEncontrado = await encontrarProduto(req);
+        const produtoEncontrado = await encontrarProduto(req, res);
         return res.status(200).json(produtoEncontrado);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
@@ -49,7 +49,7 @@ const detalharProduto = async (req, res) => {
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
     try {
-        const produtoEncontrado = await encontrarProduto(req);
+        await encontrarProduto(req, res);
 
         const excluirDoBanco = await knex('produtos')
             .delete()
@@ -68,7 +68,7 @@ const excluirProduto = async (req, res) => {
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
     try {
-        const novoProduto = await knex('produtos')
+        await knex('produtos')
             .insert({
                 descricao,
                 quantidade_estoque,
@@ -88,24 +88,20 @@ const editarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body
 
     try {
-        const temProduto = await knex('produtos').select('*').where({ id }).first();
 
-        if (!temProduto) {
-            return res.status(404).json({ mensagem: 'Produto não encontrado' });
-        };
+        await encontrarProduto(req, res);
 
-    await knex('produtos').where({ id }).update({
-        descricao,
-        quantidade_estoque,
-        valor,
-        categoria_id
-    });
-     } catch (error) {
+        const produtoAtualizado = await knex('produtos').where({ id }).update({
+            descricao,
+            quantidade_estoque,
+            valor,
+            categoria_id
+        }).returning('*');
+
+        return res.status(200).json({ produtoAtualizado });
+    } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
-
-
-    return res.status(204).send();
 };
 
 module.exports = {
