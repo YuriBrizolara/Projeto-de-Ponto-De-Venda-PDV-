@@ -49,7 +49,9 @@ const validarDados = (schema) => async (req, res, next) => {
                 });
 
             if (clientesComMesmoEmailOuCpf.length > 0) {
-                return res.status(400).json({ mensagem: 'o erro esta aqui' });
+                return res
+                    .status(400)
+                    .json({ mensagem: 'Email ou cpf já cadastrado' });
             }
         }
 
