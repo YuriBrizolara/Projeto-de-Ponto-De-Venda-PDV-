@@ -53,3 +53,5 @@ const validarDados = (schema) => async (req, res, next) => {
         return res.status(400).json({ mensagem: error.message });
     }
 };
+
+module.exports = { validarDados, verificarToken };
