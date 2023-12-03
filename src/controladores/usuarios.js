@@ -23,7 +23,7 @@ const cadastrarUsuario = async (req, res) => {
 
         return res.status(201).json(novoUsuario);
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({ mensagem: 'Erro interno do Servidor!' });
     }
 };
 const detalharUsuario = async (req, res) => {
