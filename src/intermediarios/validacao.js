@@ -41,9 +41,7 @@ const validarDados = (schema) => async (req, res, next) => {
                     .status(400)
                     .json({ mensagem: 'Email ou Cpf já cadastrado' });
             }
-        }
-
-        if (cpf && email) {
+        } else if (cpf && email) {
             const clientesComMesmoEmailOuCpf = await knex('clientes')
                 .select('*')
                 .where(function () {
