@@ -1,9 +1,9 @@
 const knex = require('../conexão');
 const jwt = require('jsonwebtoken');
 
-const validarDados = (joiSchema) => async (req, res, next) => {
+const validarDados = (schema) => async (req, res, next) => {
     try {
-        await joiSchema.validateAsync(req.body);
+        await schema.validateAsync(req.body);
 
         next();
     } catch (error) {
