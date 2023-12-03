@@ -85,9 +85,35 @@ const cadastrarProduto = async (req, res) => {
     }
 };
 
+const editarProduto = async (req, res) => {
+    const { id } = req.params;
+    const { descricao, quantidade_estoque, valor, categoria_id } = req.body
+
+    try {
+        const temProduto = await knex('produtos').select('*').where({ id }).first();
+
+        if (!temProduto) {
+            return res.status(404).json({ mensagem: 'Produto não encontrado' });
+        };
+
+    await knex('produtos').where({ id }).update({
+        descricao,
+        quantidade_estoque,
+        valor,
+        categoria_id
+    });
+     } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    }
+
+
+    return res.status(204).send();
+};
+
 module.exports = {
     listarProdutos,
     detalharProduto,
     excluirProduto,
     cadastrarProduto,
+    editarProduto
 };
