@@ -1,4 +1,5 @@
 const knex = require('../conexão');
+const jwt = require('jsonwebtoken');
 
 const verificarToken = async (req, res, next) => {
     const { authorization } = req.headers;
