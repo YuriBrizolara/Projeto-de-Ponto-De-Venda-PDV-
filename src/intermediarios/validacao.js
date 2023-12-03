@@ -27,13 +27,17 @@ const validarDados = (schema) => async (req, res, next) => {
         await schema.validateAsync(req.body);
 
         if (cpf && email) {
-            const cpfExiste = await knex('clientes').where({ cpf }).first();
-            const emailExiste = await knex('clientes').where({ email }).first();
+            const clientesComMesmoEmailOuCpf = await knex('clientes')
+                .select('*')
+                .where(function () {
+                    this.where('email', email).orWhere('cpf', cpf);
+                })
+                .whereNot('id', id);
 
-            if (emailExiste || cpfExiste) {
-                return res.status(400).json({
-                    mensagem: 'Dados já registrados em nossa base de dados',
-                });
+            if (clientesComMesmoEmailOuCpf.length > 0) {
+                return res
+                    .status(400)
+                    .json({ mensagem: 'Email ou Cpf já cadastrado' });
             }
         }
 
