@@ -1,4 +1,6 @@
 const knex = require('../conexão');
+const { encontrarProduto } = require('../utilitarios/utilitarioProduto');
+
 
 const listarProdutos = async (req, res) => {
     const { categoria_id } = req.query;
@@ -35,22 +37,18 @@ const listarProdutos = async (req, res) => {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+
 const detalharProduto = async (req, res) => {
-    const { id } = req.params;
 
     try {
-        const encontrarProduto = await knex('produtos')
-            .select('*')
-            .where('id', id)
-            .first();
-        if (!encontrarProduto) {
-            return res.status(404).json({ mensagem: 'Produto não encontrado' });
-        }
-        return res.status(200).json(encontrarProduto);
+        const produtoEncontrado = await encontrarProduto(req);
+        return res.status(200).json(produtoEncontrado);
+
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
+
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
     try {
@@ -72,25 +70,24 @@ const excluirProduto = async (req, res) => {
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
     try {
-        const novoProduto = await knex('produtos').insert({
-            descricao,
-            quantidade_estoque,
-            valor,
-            categoria_id
-        }).returning("*");
+        const novoProduto = await knex('produtos')
+            .insert({
+                descricao,
+                quantidade_estoque,
+                valor,
+                categoria_id,
+            })
+            .returning('*');
 
         return res.status(201).json();
-
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do Produto');
     }
-
-}
-
+};
 
 module.exports = {
     listarProdutos,
     detalharProduto,
     excluirProduto,
-    cadastrarProduto
+    cadastrarProduto,
 };
