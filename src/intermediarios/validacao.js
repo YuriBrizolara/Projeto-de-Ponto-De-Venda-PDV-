@@ -69,7 +69,7 @@ const validarDados = (schema) => async (req, res, next) => {
         next();
     } catch (error) {
         return res.status(500).json({
-            mensagem: 'Erro interno do servidor.',
+            mensagem: error.message,
         });
     }
 };
