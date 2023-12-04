@@ -1,4 +1,3 @@
-
 # Forest Key
 
 Este projeto consiste em uma API (Interface de Programação de Aplicações) desenvolvida para fornecer funcionalidades relacionadas a um ponto de venda. O sistema inclui recursos de cadastro de usuários, autenticação, gerenciamento de perfil e outras operações essenciais.
@@ -75,7 +74,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 | :---------------------------------- |
 | Retorna os dados do perfil do usuário logado. Requer um token de autenticação no header para garantir acesso seguro. |
 
-#### Retorna todos os itens
+#### Edita o perfil usuário logado
 
 #### `PUT` `/usuario`
 <https://motionless-blue-chinchilla.cyclic.app/usuario>
@@ -85,6 +84,116 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 | Descrição                           |
 | :---------------------------------- |
 | Permite que o usuário logado atualize as informações do seu próprio perfil. Campos obrigatórios como nome, email e senha devem ser fornecidos.  A nova senha será criptografada |
+
+#### Cadastrar Produto
+
+#### `POST` `/produto`
+<https://motionless-blue-chinchilla.cyclic.app/produto>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/bc5afb8a-499b-4b58-b0d2-073e8fa5e745" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que permite o usuário logado cadastrar um novo produto no sistema. São obrigatórios descrição, quantidade estoque, valor, categoria id|
+
+#### Editar dados do produto
+
+#### `PUT` `/produto/:id`
+<https://motionless-blue-chinchilla.cyclic.app/produto/:id>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/ff196098-796a-47ac-b34a-da80c3f60e4b" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que permite o usuário logado a atualizar as informações de um produto cadastrado. São obrigatórios descrição, quantidade estoque, valor, categoria id|
+
+#### Listar Produtos
+
+#### `GET` `/produto`
+<https://motionless-blue-chinchilla.cyclic.app/produto>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/9e876fe9-2ef5-41d2-8bc2-d59015acccb6" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser listar todos os produtos cadastrados.|
+
+#### Filtrar produto por categoria
+
+#### `GET` `/produto?categoria_id=`
+<https://motionless-blue-chinchilla.cyclic.app/produto?categoria_id=>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/21ce1ba1-b62c-4fe1-a22c-004651913359" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser listar os produtos separados por categoria.|
+
+#### Detalhar Produto
+
+#### `GET` `/produto/:id`
+<https://motionless-blue-chinchilla.cyclic.app/produto/:id>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/01252240-22c6-42ac-96f8-bc844719a32b" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser listar apenas um produto.|
+
+#### Excluir Produto por ID
+
+#### `DELETE` `/produto/:id`
+<https://motionless-blue-chinchilla.cyclic.app/produto/:id>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/7055f9e6-511b-4cda-85a1-a9a5e9f48d60" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser deletar apenas um produto.|
+
+#### Cadastrar Cliente
+
+#### `POST` `/cliente`
+<https://motionless-blue-chinchilla.cyclic.app/cliente>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/9fb0316e-abd0-41a8-8a87-06d4356058ff" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que permite usuário logado cadastrar um novo cliente no sistema.|
+
+#### Editar dados do cliente
+
+#### `PUT` `/cliente/:id`
+<https://motionless-blue-chinchilla.cyclic.app/cliente/:id>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/a7aee4b7-3b6e-4875-8ce4-0b2884a2497b" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que permite usuário logado editar um cliente no sistema.|
+
+#### Listar todos os Clientes
+
+#### `GET` `/cliente`
+<https://motionless-blue-chinchilla.cyclic.app/cliente>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/68799839-ced6-47d8-ba28-619d4242c9c5" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser listar todos os clientes cadastrados.|
+
+#### Listar um dos seus Clientes
+
+#### `GET` `/cliente/:id`
+<https://motionless-blue-chinchilla.cyclic.app/cliente/:id>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/e61969c8-e7ed-4d67-8b74-d93eabd1c76a" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser obter um de seus clientes cadastrados.|
 
 ## Autores
 
