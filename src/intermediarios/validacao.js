@@ -28,7 +28,7 @@ const validarDados = (schema) => async (req, res, next) => {
     try {
         await schema.validateAsync(req.body);
 
-        if (cpf && email) {
+        if (cpf && email && id) {
             const clientesComMesmoEmailOuCpf = await knex('clientes')
                 .select('*')
                 .where(function () {
@@ -40,6 +40,18 @@ const validarDados = (schema) => async (req, res, next) => {
                 return res
                     .status(400)
                     .json({ mensagem: 'Email ou Cpf já cadastrado' });
+            }
+        } else if (cpf && email) {
+            const clientesComMesmoEmailOuCpf = await knex('clientes')
+                .select('*')
+                .where(function () {
+                    this.where('email', email).orWhere('cpf', cpf);
+                });
+
+            if (clientesComMesmoEmailOuCpf.length > 0) {
+                return res
+                    .status(400)
+                    .json({ mensagem: 'Email ou cpf já cadastrado' });
             }
         }
 
