@@ -5,12 +5,13 @@ const encontrarProduto = async (req, res) => {
 
    try {
         const produtoEncontrado = await knex('produtos')
-            .select('*')
             .where({ id })
             .first();
         if (!produtoEncontrado) {
             return res.status(404).json({ mensagem: 'Produto não encontrado' });
         }
+        return produtoEncontrado;
+        
     } catch (error) {
         return res.status(400).json({
             mensagem: error.message,
