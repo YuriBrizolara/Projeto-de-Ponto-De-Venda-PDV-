@@ -29,7 +29,8 @@ const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
-const { validarDados, verificarToken} = require('../intermediarios/validacao');
+const { validarDados, verificarToken } = require('../intermediarios/validacao');
+const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
 
 const rotas = express.Router();
 
@@ -43,14 +44,19 @@ rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.get('/usuario', detalharUsuario);
 
 rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
-rotas.get('/cliente/:id', detalharCliente);
+rotas.get('/cliente/:id', validarParametroDeRota, detalharCliente);
 rotas.get('/cliente', listarClientes);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
-rotas.put('/produto/:id', validarDados(schemaProduto), editarProduto);
-rotas.get('/produto/:id', detalharProduto);
+rotas.put(
+    '/produto/:id',
+    validarParametroDeRota,
+    validarDados(schemaProduto),
+    editarProduto
+);
+rotas.get('/produto/:id', validarParametroDeRota, detalharProduto);
 rotas.get('/produto', listarProdutos);
 rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
-rotas.delete('/produto/:id', excluirProduto);
+rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
 
 module.exports = rotas;
