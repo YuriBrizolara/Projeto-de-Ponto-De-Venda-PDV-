@@ -25,7 +25,6 @@ const schemaCliente = joi.object({
             'string.pattern.base':
                 'Insira um número de CPF válido contendo exatamente 11 dígitos e apenas números.',
         }),
-
     cep: joi.string().allow(null, ''),
     rua: joi.string().allow(null, ''),
     numero: joi.string().allow(null, ''),
