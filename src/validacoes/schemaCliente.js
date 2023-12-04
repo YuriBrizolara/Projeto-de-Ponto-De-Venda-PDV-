@@ -14,7 +14,7 @@ const schemaCliente = joi.object({
         'string.empty': 'O campo email é obrigatório',
     }),
 
-    cpf: joi.string().min(11).max(11).required().messages({
+    cpf: joi.string().min(11).max(11).allow(null, "").messages({
         'any.required': 'O campo cpf é obrigatório',
         'string.base': 'O campo cpf é obrigatório',
         'string.empty': 'O campo cpf é obrigatório',
