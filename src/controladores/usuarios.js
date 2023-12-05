@@ -19,7 +19,7 @@ const cadastrarUsuario = async (req, res) => {
                 email,
                 senha: senhaCriptografada,
             })
-            .returning(['nome', 'email']);
+            .returning(['id', 'nome', 'email']);
 
         return res.status(201).json(novoUsuario);
     } catch (error) {
