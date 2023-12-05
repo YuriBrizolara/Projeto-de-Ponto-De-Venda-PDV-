@@ -24,34 +24,39 @@ const verificarToken = async (req, res, next) => {
 const validarDados = (schema) => async (req, res, next) => {
     const { email, cpf, categoria_id } = req.body;
     const { id } = req.params;
-
+    //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
     try {
         await schema.validateAsync(req.body);
 
-        if (cpf && email && id) {
-            const clientesComMesmoEmailOuCpf = await knex('clientes')
-                .select('*')
-                .where(function () {
-                    this.where('email', email).orWhere('cpf', cpf);
-                })
-                .whereNot('id', id);
+        if (id) {
+            const idClienteExiste = await knex('clientes')
+                .where({ id })
+                .first();
 
-            if (clientesComMesmoEmailOuCpf.length > 0) {
+            if (!idClienteExiste) {
                 return res
                     .status(400)
-                    .json({ mensagem: 'Email ou Cpf já cadastrado' });
+                    .json({ mensagem: 'ID informado é inválido!' });
             }
-        } else if (cpf && email) {
-            const clientesComMesmoEmailOuCpf = await knex('clientes')
+        }
+
+        if (cpf && email) {
+            let query = knex('clientes')
                 .select('*')
                 .where(function () {
                     this.where('email', email).orWhere('cpf', cpf);
                 });
 
+            if (id) {
+                query = query.whereNot('id', id);
+            }
+
+            const clientesComMesmoEmailOuCpf = await query;
+
             if (clientesComMesmoEmailOuCpf.length > 0) {
                 return res
                     .status(400)
-                    .json({ mensagem: 'Email ou cpf já cadastrado' });
+                    .json({ mensagem: 'Email ou CPF já cadastrado' });
             }
         }
 
@@ -68,7 +73,7 @@ const validarDados = (schema) => async (req, res, next) => {
         }
         next();
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             mensagem: error.message,
         });
     }

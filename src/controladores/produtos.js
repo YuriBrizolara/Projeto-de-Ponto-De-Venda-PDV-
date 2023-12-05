@@ -68,7 +68,7 @@ const excluirProduto = async (req, res) => {
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
     try {
-        await knex('produtos')
+        const adicionarProduto = await knex('produtos')
             .insert({
                 descricao,
                 quantidade_estoque,
@@ -77,7 +77,7 @@ const cadastrarProduto = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(201).json();
+        return res.status(201).json(adicionarProduto);
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do Produto');
     }
@@ -85,18 +85,20 @@ const cadastrarProduto = async (req, res) => {
 
 const editarProduto = async (req, res) => {
     const { id } = req.params;
-    const { descricao, quantidade_estoque, valor, categoria_id } = req.body
+    const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
 
     try {
-
         await encontrarProduto(req, res);
 
-        const produtoAtualizado = await knex('produtos').where({ id }).update({
-            descricao,
-            quantidade_estoque,
-            valor,
-            categoria_id
-        }).returning('*');
+        const produtoAtualizado = await knex('produtos')
+            .where({ id })
+            .update({
+                descricao,
+                quantidade_estoque,
+                valor,
+                categoria_id,
+            })
+            .returning('*');
 
         return res.status(200).json({ produtoAtualizado });
     } catch (error) {
@@ -109,5 +111,5 @@ module.exports = {
     detalharProduto,
     excluirProduto,
     cadastrarProduto,
-    editarProduto
+    editarProduto,
 };
