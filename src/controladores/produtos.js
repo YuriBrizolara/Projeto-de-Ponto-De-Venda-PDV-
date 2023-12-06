@@ -100,7 +100,7 @@ const editarProduto = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(200).json({ produtoAtualizado });
+        return res.status(200).json(produtoAtualizado);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
