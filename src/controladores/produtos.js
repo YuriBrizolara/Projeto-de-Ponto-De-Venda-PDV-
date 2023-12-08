@@ -55,6 +55,13 @@ const excluirProduto = async (req, res) => {
             .delete()
             .where('id', id)
             .returning('*');
+        const produtoVinculadoPedido = await knex('pedido_produtos')
+        .select('*')
+        .where('produto_id', id)
+        .first();
+        if(produtoVinculadoPedido) {
+            return res.status(404).json({ mensagem: 'Produto não pode estar vinculado a um pedido' })
+        }
 
         if (excluirDoBanco.length > 0) {
             return res
