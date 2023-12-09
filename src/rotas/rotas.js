@@ -31,6 +31,7 @@ const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
 const { validarDados, verificarToken } = require('../intermediarios/validacao');
 const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
+const { listarPedidos } = require('../controladores/pedidos');
 
 const rotas = express.Router();
 
@@ -58,5 +59,7 @@ rotas.get('/produto/:id', validarParametroDeRota, detalharProduto);
 rotas.get('/produto', listarProdutos);
 rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
 rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
+
+rotas.get('/pedido', listarPedidos);
 
 module.exports = rotas;
