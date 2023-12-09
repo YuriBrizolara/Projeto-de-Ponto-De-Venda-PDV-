@@ -3,11 +3,29 @@ const knex = require('../conexão');
 const listarPedidos = async (req, res) => {
     const { cliente_id } = req.query;
     try {
+        /*
         if (!cliente_id) {
             const todosPedidos = await knex('pedidos').select('*').first();
             return res.status(200).json(todosPedidos);
         }
+*/
+        if (!cliente_id) {
+            const todosPedidos = await knex('pedidos').select('*');
+            const pedidosEncontrados = await Promise.all(
+                todosPedidos.map(async (pedido) => {
+                    const pedido_produtos = await knex('pedido_produtos')
+                        .select('*')
+                        .where({ pedido_id: pedido.id });
 
+                    return {
+                        pedido,
+                        pedido_produtos,
+                    };
+                })
+            );
+
+            return res.status(200).json(pedidosEncontrados);
+        }
         const pedidoCliente = await knex('pedidos')
             .select('*')
             .where({ cliente_id });
@@ -27,7 +45,7 @@ const listarPedidos = async (req, res) => {
         const pedidoEncontrado = [
             {
                 pedido,
-                pedido_produtos
+                pedido_produtos,
             },
         ];
         return res.status(200).json(pedidoEncontrado);
