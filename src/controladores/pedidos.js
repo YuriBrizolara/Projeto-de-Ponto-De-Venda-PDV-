@@ -3,12 +3,7 @@ const knex = require('../conexão');
 const listarPedidos = async (req, res) => {
     const { cliente_id } = req.query;
     try {
-        /*
-        if (!cliente_id) {
-            const todosPedidos = await knex('pedidos').select('*').first();
-            return res.status(200).json(todosPedidos);
-        }
-*/
+
         if (!cliente_id) {
             const todosPedidos = await knex('pedidos').select('*');
             const pedidosEncontrados = await Promise.all(
