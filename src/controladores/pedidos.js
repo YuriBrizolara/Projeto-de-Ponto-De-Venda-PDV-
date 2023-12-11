@@ -50,4 +50,12 @@ const listarPedidos = async (req, res) => {
     }
 };
 
-module.exports = { listarPedidos };
+const cadastrarPedidos = async (req, res) => {
+
+}
+
+
+module.exports = {
+    listarPedidos,
+    cadastrarPedidos
+};

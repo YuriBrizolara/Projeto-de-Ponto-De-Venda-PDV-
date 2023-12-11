@@ -33,7 +33,15 @@ const validarDados = (schema) => async (req, res, next) => {
                 .where({ id })
                 .first();
 
+
             if (!idClienteExiste) {
+                const idProdutoExistente = await knex('produtos')
+                    .where({ id })
+                    .first();
+                if (idProdutoExistente) {
+                    next();
+                }
+
                 return res
                     .status(400)
                     .json({ mensagem: 'ID informado é inválido!' });

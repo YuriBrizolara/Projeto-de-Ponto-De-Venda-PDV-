@@ -25,13 +25,19 @@ const {
     cadastrarCliente,
 } = require('../controladores/clientes');
 
+const {
+    listarPedidos,
+    cadastrarPedidos
+} = require('../controladores/pedidos');
+
+
 const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
 const { validarDados, verificarToken } = require('../intermediarios/validacao');
 const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
-const { listarPedidos } = require('../controladores/pedidos');
+
 
 const rotas = express.Router();
 
@@ -61,5 +67,6 @@ rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
 rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
 
 rotas.get('/pedido', listarPedidos);
+rotas.post('/pedido', cadastrarPedidos);
 
 module.exports = rotas;
