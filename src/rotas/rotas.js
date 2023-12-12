@@ -55,16 +55,12 @@ rotas.get('/cliente/:id', validarParametroDeRota, detalharCliente);
 rotas.get('/cliente', listarClientes);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
-rotas.put(
-    '/produto/:id',
-    validarParametroDeRota,
-    validarDados(schemaProduto),
-    editarProduto
-);
-rotas.get('/produto/:id', validarParametroDeRota, detalharProduto);
+rotas.put('/produto/:idProduto', validarDados(schemaProduto), validarParametroDeRota,
+    editarProduto);
+rotas.get('/produto/:idProduto', validarParametroDeRota, detalharProduto);
 rotas.get('/produto', listarProdutos);
 rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
-rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
+rotas.delete('/produto/:idProduto', validarParametroDeRota, excluirProduto);
 
 rotas.get('/pedido', listarPedidos);
 rotas.post('/pedido', cadastrarPedidos);

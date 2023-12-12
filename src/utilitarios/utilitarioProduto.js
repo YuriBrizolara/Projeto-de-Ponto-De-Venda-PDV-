@@ -1,20 +1,22 @@
 const knex = require('../conexão');
 
 const encontrarProduto = async (req, res) => {
-    const { id } = req.params;
+    const { idProduto } = req.params;
 
-   try {
+    try {
         const produtoEncontrado = await knex('produtos')
-            .where({ id })
+            .where('id', idProduto)
             .first();
         if (!produtoEncontrado) {
-            return res.status(404).json({ mensagem: 'Produto não encontrado' });
+            return res.status(404).json({ mensagem: 'Produto não encontrado quebrou' });
         }
+        req.produto = produtoEncontrado;
+        console.log('vai entrar no return e produto encontrado é: ' + produtoEncontrado);
         return produtoEncontrado;
-        
+
     } catch (error) {
-        return res.status(400).json({
-            mensagem: error.message,
+        return res.status(500).json({
+            mensagem: 'Erro interno do servidor'
         });
     }
 };
