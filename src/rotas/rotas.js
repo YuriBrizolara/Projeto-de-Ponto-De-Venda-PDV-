@@ -43,20 +43,25 @@ rotas.use(verificarToken);
 rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
 rotas.get('/usuario', detalharUsuario);
 
-rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
-rotas.get('/cliente/:id', validarParametroDeRota, detalharCliente);
+rotas.put(
+    '/cliente/:id',
+    validarParametroDeRota('cliente'),
+    validarDados(schemaCliente),
+    editarCliente
+);
+rotas.get('/cliente/:id', validarParametroDeRota('cliente'), detalharCliente);
 rotas.get('/cliente', listarClientes);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
 rotas.put(
     '/produto/:id',
-    validarParametroDeRota,
+    validarParametroDeRota('produto'),
     validarDados(schemaProduto),
     editarProduto
 );
-rotas.get('/produto/:id', validarParametroDeRota, detalharProduto);
+rotas.get('/produto/:id', validarParametroDeRota('produto'), detalharProduto);
 rotas.get('/produto', listarProdutos);
 rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
-rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
+rotas.delete('/produto/:id', validarParametroDeRota('produto'), excluirProduto);
 
 module.exports = rotas;

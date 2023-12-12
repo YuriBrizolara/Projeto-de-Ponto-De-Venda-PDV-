@@ -28,18 +28,6 @@ const validarDados = (schema) => async (req, res, next) => {
     try {
         await schema.validateAsync(req.body);
 
-        if (id) {
-            const idClienteExiste = await knex('clientes')
-                .where({ id })
-                .first();
-
-            if (!idClienteExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'ID informado é inválido!' });
-            }
-        }
-
         if (cpf && email) {
             let query = knex('clientes')
                 .select('*')
@@ -60,17 +48,6 @@ const validarDados = (schema) => async (req, res, next) => {
             }
         }
 
-        if (categoria_id) {
-            const idExiste = await knex('categorias')
-                .where({ id: categoria_id })
-                .first();
-
-            if (!idExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'A categoria informada é invalida!' });
-            }
-        }
         next();
     } catch (error) {
         return res.status(400).json({
