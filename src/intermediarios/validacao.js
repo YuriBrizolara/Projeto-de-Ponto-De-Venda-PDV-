@@ -1,6 +1,8 @@
 const knex = require('../conexão');
 const jwt = require('jsonwebtoken');
-
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const verificarToken = async (req, res, next) => {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -21,12 +23,17 @@ const verificarToken = async (req, res, next) => {
     }
 };
 
-const validarDados = (schema, rota) => async (req, res, next) => {
-    const { email, cpf, categoria_id } = req.body;
-    const { id } = req.params;
-    //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
+const validarDados = (schema) => async (req, res, next) => {
+    console.log(req);
+
     try {
-        await schema.validateAsync(req.body);
+        // Combine os dados do formulário (req.body) e os dados do arquivo (req.file)
+        const dadosFormulario = { ...req.body };
+
+        await schema.validateAsync(dadosFormulario);
+
+        const { email, cpf, categoria_id } = dadosFormulario;
+        const { id } = req.params;
 
         if (cpf && email) {
             let query = knex('clientes')
@@ -47,6 +54,7 @@ const validarDados = (schema, rota) => async (req, res, next) => {
                     .json({ mensagem: 'Email ou CPF já cadastrado' });
             }
         }
+
         if (categoria_id) {
             const idExiste = await knex('categorias')
                 .where({ id: categoria_id })
@@ -58,6 +66,7 @@ const validarDados = (schema, rota) => async (req, res, next) => {
                     .json({ mensagem: 'A categoria informada é invalida!' });
             }
         }
+
         next();
     } catch (error) {
         return res.status(400).json({
