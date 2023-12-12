@@ -39,27 +39,28 @@ const listarProdutos = async (req, res) => {
 
 const detalharProduto = async (req, res) => {
     try {
-        const produtoEncontrado = await encontrarProduto(req, res);
-        return res.status(200).json(produtoEncontrado);
+        await encontrarProduto(req, res);
+
+        res.status(200).json(req.produto)
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
 
 const excluirProduto = async (req, res) => {
-    const { id } = req.params;
+    const { idProduto } = req.params;
     try {
         await encontrarProduto(req, res);
 
         const excluirDoBanco = await knex('produtos')
             .delete()
-            .where('id', id)
+            .where('id', idProduto)
             .returning('*');
         const produtoVinculadoPedido = await knex('pedido_produtos')
-        .select('*')
-        .where('produto_id', id)
-        .first();
-        if(produtoVinculadoPedido) {
+            .select('*')
+            .where('produto_id', idProduto)
+            .first();
+        if (produtoVinculadoPedido) {
             return res.status(404).json({ mensagem: 'Produto não pode estar vinculado a um pedido' })
         }
 
@@ -91,14 +92,14 @@ const cadastrarProduto = async (req, res) => {
 };
 
 const editarProduto = async (req, res) => {
-    const { id } = req.params;
+    const { idProduto } = req.params;
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
 
     try {
         await encontrarProduto(req, res);
 
         const produtoAtualizado = await knex('produtos')
-            .where({ id })
+            .where("id", idProduto)
             .update({
                 descricao,
                 quantidade_estoque,
