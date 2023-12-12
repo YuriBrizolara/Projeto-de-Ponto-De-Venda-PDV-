@@ -11,7 +11,7 @@ const encontrarProduto = async (req, res) => {
             return res.status(404).json({ mensagem: 'Produto não encontrado quebrou' });
         }
         req.produto = produtoEncontrado;
-        console.log('vai entrar no return e produto encontrado é: ' + produtoEncontrado);
+
         return produtoEncontrado;
 
     } catch (error) {

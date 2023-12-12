@@ -31,7 +31,7 @@ const validarDados = (schema) => async (req, res, next) => {
 
         if (idProduto) {
             const produtoExiste = await knex('produtos').where('id', '=', idProduto).first();
-            console.log(produtoExiste);
+
             if (!produtoExiste) {
                 return res.status(404).json({ mensagem: "Produto não encontrado." })
             }
