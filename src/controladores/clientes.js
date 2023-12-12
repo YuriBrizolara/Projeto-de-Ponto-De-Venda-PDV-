@@ -11,13 +11,10 @@ const editarCliente = async (req, res) => {
                 cpf,
             })
             .where('id', id)
-            .returning(['nome', 'email', 'cpf']);
+            .returning('*');
 
         if (atualizarCliente.length > 0) {
-            return res.status(200).json({
-                mensagem: 'Alteração realizada',
-                dados: atualizarCliente[0],
-            });
+            return res.status(200).json(atualizarCliente[0]);
         }
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
@@ -40,7 +37,7 @@ const detalharCliente = async (req, res) => {
         if (clienteEncontrado.length === 0) {
             return res.status(404).json({ mensagem: 'cliente não encontrado' });
         }
-        return res.status(200).json(clienteEncontrado);
+        return res.status(200).json(clienteEncontrado[0]);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro ao detalhar o cliente' });
     }
@@ -63,7 +60,7 @@ const cadastrarCliente = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(201).json(novoCliente);
+        return res.status(201).json(novoCliente[0]);
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do cliente');
     }

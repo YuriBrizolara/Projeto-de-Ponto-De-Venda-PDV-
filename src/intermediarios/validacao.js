@@ -21,7 +21,7 @@ const verificarToken = async (req, res, next) => {
     }
 };
 
-const validarDados = (schema) => async (req, res, next) => {
+const validarDados = (schema, rota) => async (req, res, next) => {
     const { email, cpf, categoria_id } = req.body;
     const { id } = req.params;
     //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)

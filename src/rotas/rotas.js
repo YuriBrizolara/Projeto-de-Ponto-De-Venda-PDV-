@@ -25,6 +25,8 @@ const {
     cadastrarCliente,
 } = require('../controladores/clientes');
 
+const { listarPedidos, cadastrarPedidos } = require('../controladores/pedidos');
+
 const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');

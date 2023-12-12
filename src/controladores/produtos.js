@@ -55,6 +55,13 @@ const excluirProduto = async (req, res) => {
             .delete()
             .where('id', id)
             .returning('*');
+        const produtoVinculadoPedido = await knex('pedido_produtos')
+        .select('*')
+        .where('produto_id', id)
+        .first();
+        if(produtoVinculadoPedido) {
+            return res.status(404).json({ mensagem: 'Produto não pode estar vinculado a um pedido' })
+        }
 
         if (excluirDoBanco.length > 0) {
             return res
@@ -77,7 +84,7 @@ const cadastrarProduto = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(201).json(adicionarProduto);
+        return res.status(201).json(adicionarProduto[0]);
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do Produto');
     }
@@ -100,7 +107,7 @@ const editarProduto = async (req, res) => {
             })
             .returning('*');
 
-        return res.status(200).json({ produtoAtualizado });
+        return res.status(200).json(produtoAtualizado[0]);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
