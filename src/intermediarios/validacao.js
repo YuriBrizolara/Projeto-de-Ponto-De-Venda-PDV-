@@ -23,11 +23,19 @@ const verificarToken = async (req, res, next) => {
 
 const validarDados = (schema) => async (req, res, next) => {
     const { email, cpf, categoria_id } = req.body;
-    const { id } = req.params;
+    const { id, idProduto } = req.params;
     //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
     try {
         await schema.validateAsync(req.body);
 
+
+        if (idProduto) {
+            const produtoExiste = await knex('produtos').where('id', '=', idProduto).first();
+            console.log(produtoExiste);
+            if (!produtoExiste) {
+                return res.status(404).json({ mensagem: "Produto não encontrado." })
+            }
+        }
         if (id) {
             const idClienteExiste = await knex('clientes')
                 .where({ id })
@@ -35,18 +43,11 @@ const validarDados = (schema) => async (req, res, next) => {
 
 
             if (!idClienteExiste) {
-                const idProdutoExistente = await knex('produtos')
-                    .where({ id })
-                    .first();
-                if (idProdutoExistente) {
-                    next();
-                }
-
                 return res
                     .status(400)
                     .json({ mensagem: 'ID informado é inválido!' });
-            }
-        }
+            };
+        };
 
         if (cpf && email) {
             let query = knex('clientes')
@@ -82,7 +83,7 @@ const validarDados = (schema) => async (req, res, next) => {
         next();
     } catch (error) {
         return res.status(400).json({
-            mensagem: error.message,
+            mensagem: error.message
         });
     }
 };
