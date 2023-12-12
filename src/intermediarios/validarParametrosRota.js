@@ -8,37 +8,11 @@ const validarParametroDeRota = (rota) => async (req, res, next) => {
                 mensagem: 'Insira um numero de ID valido!',
             });
         }
-        if (rota === 'cliente') {
-            const idClienteExiste = await knex('clientes')
-                .where({ id })
-                .first();
-
-            if (!idClienteExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'Cliente não localizado' });
-            }
+        const localizarId = await knex(rota).where({ id }).first();
+        if (!localizarId) {
+            return res.status(404).json({ mensagem: 'Id não localizado' });
         }
-        if (rota === 'produto') {
-            const idProdutoExiste = await knex('produtos')
-                .where({ id })
-                .first();
 
-            if (!idProdutoExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'Produto não localizado' });
-            }
-        }
-        if (rota === 'categoria') {
-            const idExiste = await knex('categorias').where({ id }).first();
-
-            if (!idExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'A categoria informada é invalida!' });
-            }
-        }
         next();
     } catch (error) {
         return res.status(400).json({

@@ -47,23 +47,27 @@ rotas.get('/usuario', detalharUsuario);
 
 rotas.put(
     '/cliente/:id',
-    validarParametroDeRota('cliente'),
+    validarParametroDeRota('clientes'),
     validarDados(schemaCliente),
     editarCliente
 );
-rotas.get('/cliente/:id', validarParametroDeRota('cliente'), detalharCliente);
+rotas.get('/cliente/:id', validarParametroDeRota('clientes'), detalharCliente);
 rotas.get('/cliente', listarClientes);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
 rotas.put(
     '/produto/:id',
-    validarParametroDeRota('produto'),
+    validarParametroDeRota('produtos'),
     validarDados(schemaProduto),
     editarProduto
 );
-rotas.get('/produto/:id', validarParametroDeRota('produto'), detalharProduto);
+rotas.get('/produto/:id', validarParametroDeRota('produtos'), detalharProduto);
 rotas.get('/produto', listarProdutos);
 rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
-rotas.delete('/produto/:id', validarParametroDeRota('produto'), excluirProduto);
+rotas.delete(
+    '/produto/:id',
+    validarParametroDeRota('produtos'),
+    excluirProduto
+);
 
 module.exports = rotas;
