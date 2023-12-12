@@ -47,7 +47,17 @@ const validarDados = (schema, rota) => async (req, res, next) => {
                     .json({ mensagem: 'Email ou CPF já cadastrado' });
             }
         }
+        if (categoria_id) {
+            const idExiste = await knex('categorias')
+                .where({ id: categoria_id })
+                .first();
 
+            if (!idExiste) {
+                return res
+                    .status(400)
+                    .json({ mensagem: 'A categoria informada é invalida!' });
+            }
+        }
         next();
     } catch (error) {
         return res.status(400).json({

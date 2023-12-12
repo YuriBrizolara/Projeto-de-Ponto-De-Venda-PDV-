@@ -1,7 +1,7 @@
 const knex = require('../conexão');
 const validarParametroDeRota = (rota) => async (req, res, next) => {
     const { id } = req.params;
-    console.log(rota);
+
     try {
         if (id === undefined || isNaN(Number(id))) {
             return res.status(400).json({
