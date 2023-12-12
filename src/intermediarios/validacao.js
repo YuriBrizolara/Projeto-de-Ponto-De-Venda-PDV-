@@ -21,7 +21,7 @@ const verificarToken = async (req, res, next) => {
     }
 };
 
-const validarDados = (schema) => async (req, res, next) => {
+const validarDados = (schema, rota) => async (req, res, next) => {
     const { email, cpf, categoria_id } = req.body;
     const { id } = req.params;
     //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
@@ -40,11 +40,16 @@ const validarDados = (schema) => async (req, res, next) => {
                     .first();
                 if (idProdutoExistente) {
                     next();
+                    return
+                }
+                else {
+                    return res
+                        .status(400)
+                        .json({ mensagem: 'ID informado é inválido!' });
+
                 }
 
-                return res
-                    .status(400)
-                    .json({ mensagem: 'ID informado é inválido!' });
+
             }
         }
 
