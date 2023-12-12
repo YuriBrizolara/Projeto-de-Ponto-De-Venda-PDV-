@@ -22,42 +22,43 @@ const verificarToken = async (req, res, next) => {
 };
 
 const validarDados = (schema) => async (req, res, next) => {
-    const { email, cpf, categoria_id } = req.body;
-    const { id } = req.params;
-    //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
+    // const { email, cpf, categoria_id } = req.body;
+    // const { id } = req.params;
+
+    // //alterar mensagem nos schemas para mensagem generica caso falte dados (cadastro, atualização)
     try {
         await schema.validateAsync(req.body);
 
-        if (cpf && email) {
-            let query = knex('clientes')
-                .select('*')
-                .where(function () {
-                    this.where('email', email).orWhere('cpf', cpf);
-                });
+        // if (cpf && email) {
+        //     let query = knex('clientes')
+        //         .select('*')
+        //         .where(function () {
+        //             this.where('email', email).orWhere('cpf', cpf);
+        //         });
 
-            if (id) {
-                query = query.whereNot('id', id);
-            }
+        //     if (id) {
+        //         query = query.whereNot('id', id);
+        //     }
 
-            const clientesComMesmoEmailOuCpf = await query;
+        //     const clientesComMesmoEmailOuCpf = await query;
 
-            if (clientesComMesmoEmailOuCpf.length > 0) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'Email ou CPF já cadastrado' });
-            }
-        }
-        if (categoria_id) {
-            const idExiste = await knex('categorias')
-                .where({ id: categoria_id })
-                .first();
+        //     if (clientesComMesmoEmailOuCpf.length > 0) {
+        //         return res
+        //             .status(400)
+        //             .json({ mensagem: 'Email ou CPF já cadastrado' });
+        //     }
+        // }
+        // if (categoria_id) {
+        //     const idExiste = await knex('categorias')
+        //         .where({ id: categoria_id })
+        //         .first();
 
-            if (!idExiste) {
-                return res
-                    .status(400)
-                    .json({ mensagem: 'A categoria informada é invalida!' });
-            }
-        }
+        //     if (!idExiste) {
+        //         return res
+        //             .status(400)
+        //             .json({ mensagem: 'A categoria informada é invalida!' });
+        //     }
+        // }
         next();
     } catch (error) {
         return res.status(400).json({

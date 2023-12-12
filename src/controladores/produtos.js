@@ -60,11 +60,9 @@ const excluirProduto = async (req, res) => {
             .where('produto_id', id)
             .first();
         if (produtoVinculadoPedido) {
-            return res
-                .status(404)
-                .json({
-                    mensagem: 'Produto não pode estar vinculado a um pedido',
-                });
+            return res.status(404).json({
+                mensagem: 'Produto não pode estar vinculado a um pedido',
+            });
         }
 
         if (excluirDoBanco.length > 0) {
@@ -78,6 +76,9 @@ const excluirProduto = async (req, res) => {
 };
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
+    const arquivo = req.file;
+    console.log(arquivo);
+    return res.send('ola mundo');
     try {
         const adicionarProduto = await knex('produtos')
             .insert({

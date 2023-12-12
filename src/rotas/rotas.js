@@ -34,6 +34,8 @@ const schemaProduto = require('../validacoes/schemaProduto');
 const { validarDados, verificarToken } = require('../intermediarios/validacao');
 const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
 
+const multer = require('../intermediarios/multer');
+
 const rotas = express.Router();
 
 rotas.post('/usuario', validarDados(schemaCadastroUsuario), cadastrarUsuario);
@@ -51,8 +53,8 @@ rotas.put(
     validarDados(schemaCliente),
     editarCliente
 );
-rotas.get('/cliente/:id', validarParametroDeRota('clientes'), detalharCliente);
 rotas.get('/cliente', listarClientes);
+rotas.get('/cliente/:id', validarParametroDeRota('clientes'), detalharCliente);
 rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
 
 rotas.put(
@@ -63,7 +65,12 @@ rotas.put(
 );
 rotas.get('/produto/:id', validarParametroDeRota('produtos'), detalharProduto);
 rotas.get('/produto', listarProdutos);
-rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
+rotas.post(
+    '/produto',
+    multer.single('produto_imagem'),
+    validarDados(schemaProduto),
+    cadastrarProduto
+);
 rotas.delete(
     '/produto/:id',
     validarParametroDeRota('produtos'),
