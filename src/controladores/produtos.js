@@ -1,5 +1,9 @@
 const knex = require('../conexão');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const { encontrarProduto } = require('../utilitarios/utilitarioProduto');
+const { uploadArquivo } = require('../utilitarios/s3');
 
 const listarProdutos = async (req, res) => {
     const { categoria_id } = req.query;
@@ -56,11 +60,13 @@ const excluirProduto = async (req, res) => {
             .where('id', id)
             .returning('*');
         const produtoVinculadoPedido = await knex('pedido_produtos')
-        .select('*')
-        .where('produto_id', id)
-        .first();
-        if(produtoVinculadoPedido) {
-            return res.status(404).json({ mensagem: 'Produto não pode estar vinculado a um pedido' })
+            .select('*')
+            .where('produto_id', id)
+            .first();
+        if (produtoVinculadoPedido) {
+            return res.status(404).json({
+                mensagem: 'Produto não pode estar vinculado a um pedido',
+            });
         }
 
         if (excluirDoBanco.length > 0) {
@@ -74,13 +80,21 @@ const excluirProduto = async (req, res) => {
 };
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
+
     try {
+        let produto_imagemUrl = null;
+
+        if (req.file) {
+            produto_imagemUrl = await uploadArquivo(req.file.buffer);
+        }
+
         const adicionarProduto = await knex('produtos')
             .insert({
                 descricao,
                 quantidade_estoque,
                 valor,
                 categoria_id,
+                produto_imagem: produto_imagemUrl,
             })
             .returning('*');
 

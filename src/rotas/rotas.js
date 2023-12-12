@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const listarCategorias = require('../controladores/categorias');
 
@@ -63,7 +66,12 @@ rotas.put(
 );
 rotas.get('/produto/:id', validarParametroDeRota('produtos'), detalharProduto);
 rotas.get('/produto', listarProdutos);
-rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
+rotas.post(
+    '/produto',
+    validarDados(schemaProduto),
+    upload.single('produto_imagem'),
+    cadastrarProduto
+);
 rotas.delete(
     '/produto/:id',
     validarParametroDeRota('produtos'),
