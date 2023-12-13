@@ -53,18 +53,23 @@ const excluirProduto = async (req, res) => {
     const arquivo = req.file;
     try {
         const informacaoDoProduto = await encontrarProduto(req, res);
-        const urlManipulada = informacaoDoProduto.produto_imagem.split('/');
-        const nomeDoArquivo = urlManipulada[urlManipulada.length - 1];
+        if (informacaoDoProduto.produto_imagem) {
+            const urlManipulada = informacaoDoProduto.produto_imagem.split('/');
+            const nomeDoArquivo = urlManipulada[urlManipulada.length - 1];
 
-        const excluirImagemBucket = await excluirArquivo(nomeDoArquivo);
+            const excluirImagemBucket = await excluirArquivo(nomeDoArquivo);
+        }
+
         const excluirDoBanco = await knex('produtos')
             .delete()
             .where('id', id)
             .returning('*');
+
         const produtoVinculadoPedido = await knex('pedido_produtos')
             .select('*')
             .where('produto_id', id)
             .first();
+
         if (produtoVinculadoPedido) {
             return res.status(404).json({
                 mensagem: 'Produto não pode estar vinculado a um pedido',
