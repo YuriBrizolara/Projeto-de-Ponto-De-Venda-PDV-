@@ -21,10 +21,6 @@ const uploadArquivo = async (path, buffer, mimetype) => {
         .promise();
     const url = arquivo.Location;
     return url;
-    // return {
-    //     url: arquivo.Location,
-    //     path: arquivo.Key,
-    // };
 };
 
 const excluirArquivo = async (path) => {
@@ -35,7 +31,6 @@ const excluirArquivo = async (path) => {
         })
         .promise();
 };
-
 module.exports = {
     uploadArquivo,
     excluirArquivo,

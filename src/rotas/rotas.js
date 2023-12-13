@@ -31,36 +31,54 @@ const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
-const { validarDados, verificarToken } = require('../intermediarios/validacao');
+const {
+    validarCorpo,
+    verificarToken,
+} = require('../intermediarios/validarCorpo');
 const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
 
 const multer = require('../intermediarios/multer');
+const validarCpf_Email = require('../intermediarios/validarCpf');
+const validarCategoria = require('../intermediarios/validarCategoria');
 
 const rotas = express.Router();
 
-rotas.post('/usuario', validarDados(schemaCadastroUsuario), cadastrarUsuario);
-rotas.post('/login', validarDados(schemaLogin), efetuarLogin);
+rotas.post('/usuario', validarCorpo(schemaCadastroUsuario), cadastrarUsuario);
+rotas.post('/login', validarCorpo(schemaLogin), efetuarLogin);
 rotas.get('/categoria', listarCategorias);
 
 rotas.use(verificarToken);
 
-rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
+rotas.put(
+    '/usuario',
+    validarCorpo(schemaCadastroUsuario),
+    validarCpf_Email,
+    editarUsuario
+);
 rotas.get('/usuario', detalharUsuario);
 
 rotas.put(
     '/cliente/:id',
     validarParametroDeRota('clientes'),
-    validarDados(schemaCliente),
+    validarCorpo(schemaCliente),
+    validarCpf_Email,
     editarCliente
 );
 rotas.get('/cliente', listarClientes);
 rotas.get('/cliente/:id', validarParametroDeRota('clientes'), detalharCliente);
-rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
+rotas.post(
+    '/cliente',
+    validarCorpo(schemaCliente),
+    validarCpf_Email,
+    cadastrarCliente
+);
 
 rotas.put(
     '/produto/:id',
+    multer.single('produto_imagem'),
     validarParametroDeRota('produtos'),
-    validarDados(schemaProduto),
+    validarCorpo(schemaProduto),
+    validarCategoria,
     editarProduto
 );
 rotas.get('/produto/:id', validarParametroDeRota('produtos'), detalharProduto);
@@ -68,7 +86,8 @@ rotas.get('/produto', listarProdutos);
 rotas.post(
     '/produto',
     multer.single('produto_imagem'),
-    validarDados(schemaProduto),
+    validarCorpo(schemaProduto),
+    validarCategoria,
     cadastrarProduto
 );
 rotas.delete(

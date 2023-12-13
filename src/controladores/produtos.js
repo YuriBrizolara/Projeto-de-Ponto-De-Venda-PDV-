@@ -1,5 +1,7 @@
+const { S3 } = require('aws-sdk');
 const knex = require('../conexão');
 const { encontrarProduto } = require('../utilitarios/utilitarioProduto');
+const { uploadArquivo, excluirArquivo } = require('../utilitarios/s3');
 
 const listarProdutos = async (req, res) => {
     const { categoria_id } = req.query;
@@ -48,9 +50,13 @@ const detalharProduto = async (req, res) => {
 
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
+    const arquivo = req.file;
     try {
-        await encontrarProduto(req, res);
+        const informacaoDoProduto = await encontrarProduto(req, res);
+        const urlManipulada = informacaoDoProduto.produto_imagem.split('/');
+        const nomeDoArquivo = urlManipulada[urlManipulada.length - 1];
 
+        const excluirImagemBucket = await excluirArquivo(nomeDoArquivo);
         const excluirDoBanco = await knex('produtos')
             .delete()
             .where('id', id)
@@ -71,21 +77,27 @@ const excluirProduto = async (req, res) => {
                 .json({ mensagem: 'Produto excluido com sucesso' });
         }
     } catch (error) {
-        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+        return res.status(500).json(error.message);
+        // return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
 const cadastrarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
     const arquivo = req.file;
-    console.log(arquivo);
-    return res.send('ola mundo');
+
     try {
+        const produto_imagem = await uploadArquivo(
+            arquivo.originalname,
+            arquivo.buffer,
+            arquivo.mimetype
+        );
         const adicionarProduto = await knex('produtos')
             .insert({
                 descricao,
                 quantidade_estoque,
                 valor,
                 categoria_id,
+                produto_imagem,
             })
             .returning('*');
 
@@ -98,9 +110,14 @@ const cadastrarProduto = async (req, res) => {
 const editarProduto = async (req, res) => {
     const { id } = req.params;
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
-
+    const arquivo = req.file;
     try {
         await encontrarProduto(req, res);
+        const produto_imagem = await uploadArquivo(
+            arquivo.originalname,
+            arquivo.buffer,
+            arquivo.mimetype
+        );
 
         const produtoAtualizado = await knex('produtos')
             .where({ id })
@@ -109,6 +126,7 @@ const editarProduto = async (req, res) => {
                 quantidade_estoque,
                 valor,
                 categoria_id,
+                produto_imagem,
             })
             .returning('*');
 
