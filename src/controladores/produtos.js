@@ -50,8 +50,18 @@ const detalharProduto = async (req, res) => {
 
 const excluirProduto = async (req, res) => {
     const { id } = req.params;
-    const arquivo = req.file;
+
     try {
+        const produtoVinculadoPedido = await knex('pedido_produtos')
+            .select('*')
+            .where('produto_id', id)
+            .first();
+
+        if (produtoVinculadoPedido) {
+            return res.status(404).json({
+                mensagem: 'Produto não pode estar vinculado a um pedido',
+            });
+        }
         const informacaoDoProduto = await encontrarProduto(req, res);
         if (informacaoDoProduto.produto_imagem) {
             const urlManipulada = informacaoDoProduto.produto_imagem.split('/');
@@ -64,17 +74,6 @@ const excluirProduto = async (req, res) => {
             .delete()
             .where('id', id)
             .returning('*');
-
-        const produtoVinculadoPedido = await knex('pedido_produtos')
-            .select('*')
-            .where('produto_id', id)
-            .first();
-
-        if (produtoVinculadoPedido) {
-            return res.status(404).json({
-                mensagem: 'Produto não pode estar vinculado a um pedido',
-            });
-        }
 
         if (excluirDoBanco.length > 0) {
             return res

@@ -24,12 +24,13 @@ const uploadArquivo = async (path, buffer, mimetype) => {
 };
 
 const excluirArquivo = async (path) => {
-    await s3
+    const resposta = await s3
         .deleteObject({
             Bucket: process.env.BACKBLAZE_BUCKET,
             Key: path,
         })
         .promise();
+    return resposta;
 };
 module.exports = {
     uploadArquivo,
