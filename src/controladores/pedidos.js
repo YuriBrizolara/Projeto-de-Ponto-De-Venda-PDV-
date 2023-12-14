@@ -25,7 +25,7 @@ const listarPedidos = async (req, res) => {
             .select('*')
             .where({ cliente_id });
 
-        if (!pedidoCliente) {
+        if (pedidoCliente.length === 0) {
             return res.status(404).json({
                 mensagem:
                     'Nenhum pedido encontrado para o cliente especificado',
