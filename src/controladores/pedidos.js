@@ -42,7 +42,7 @@ const listarPedidos = async (req, res) => {
                 pedido_produtos,
             },
         ];
-        return res.status(200).json(pedidoEncontrado);
+        return res.status(200).json(pedidoEncontrado[0]);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
