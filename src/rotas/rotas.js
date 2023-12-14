@@ -96,4 +96,6 @@ rotas.delete(
     excluirProduto
 );
 
+rotas.get('/pedido', listarPedidos);
+
 module.exports = rotas;
