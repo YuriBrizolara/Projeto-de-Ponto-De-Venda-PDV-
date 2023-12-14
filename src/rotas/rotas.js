@@ -25,40 +25,76 @@ const {
     cadastrarCliente,
 } = require('../controladores/clientes');
 
+const { listarPedidos, cadastrarPedidos } = require('../controladores/pedidos');
+
 const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
-const { validarDados, verificarToken } = require('../intermediarios/validacao');
+const {
+    validarCorpo,
+    verificarToken,
+} = require('../intermediarios/validarCorpo');
 const validarParametroDeRota = require('../intermediarios/validarParametrosRota');
-const { listarPedidos } = require('../controladores/pedidos');
+
+const multer = require('../intermediarios/multer');
+const validarCpf_Email = require('../intermediarios/validarCpf');
+const validarCategoria = require('../intermediarios/validarCategoria');
 
 const rotas = express.Router();
 
-rotas.post('/usuario', validarDados(schemaCadastroUsuario), cadastrarUsuario);
-rotas.post('/login', validarDados(schemaLogin), efetuarLogin);
+rotas.post('/usuario', validarCorpo(schemaCadastroUsuario), cadastrarUsuario);
+rotas.post('/login', validarCorpo(schemaLogin), efetuarLogin);
 rotas.get('/categoria', listarCategorias);
 
 rotas.use(verificarToken);
 
-rotas.put('/usuario', validarDados(schemaCadastroUsuario), editarUsuario);
+rotas.put(
+    '/usuario',
+    validarCorpo(schemaCadastroUsuario),
+    validarCpf_Email,
+    editarUsuario
+);
 rotas.get('/usuario', detalharUsuario);
 
-rotas.put('/cliente/:id', validarDados(schemaCliente), editarCliente);
-rotas.get('/cliente/:id', validarParametroDeRota, detalharCliente);
+rotas.put(
+    '/cliente/:id',
+    validarParametroDeRota('clientes'),
+    validarCorpo(schemaCliente),
+    validarCpf_Email,
+    editarCliente
+);
 rotas.get('/cliente', listarClientes);
-rotas.post('/cliente', validarDados(schemaCliente), cadastrarCliente);
+rotas.get('/cliente/:id', validarParametroDeRota('clientes'), detalharCliente);
+rotas.post(
+    '/cliente',
+    validarCorpo(schemaCliente),
+    validarCpf_Email,
+    cadastrarCliente
+);
 
 rotas.put(
     '/produto/:id',
-    validarParametroDeRota,
-    validarDados(schemaProduto),
+    multer.single('produto_imagem'),
+    validarParametroDeRota('produtos'),
+    validarCorpo(schemaProduto),
+    validarCategoria,
     editarProduto
 );
-rotas.get('/produto/:id', validarParametroDeRota, detalharProduto);
+rotas.get('/produto/:id', validarParametroDeRota('produtos'), detalharProduto);
 rotas.get('/produto', listarProdutos);
-rotas.post('/produto', validarDados(schemaProduto), cadastrarProduto);
-rotas.delete('/produto/:id', validarParametroDeRota, excluirProduto);
+rotas.post(
+    '/produto',
+    multer.single('produto_imagem'),
+    validarCorpo(schemaProduto),
+    validarCategoria,
+    cadastrarProduto
+);
+rotas.delete(
+    '/produto/:id',
+    validarParametroDeRota('produtos'),
+    excluirProduto
+);
 
 rotas.get('/pedido', listarPedidos);
 

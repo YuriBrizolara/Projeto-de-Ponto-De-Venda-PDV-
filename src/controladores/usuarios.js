@@ -58,12 +58,16 @@ const editarUsuario = async (req, res) => {
             }
         }
 
-        await knex('usuarios').where({ id }).update({
-            nome,
-            email,
-            senha: senhaCriptografada,
-        });
-        return res.status(204).send();
+        const atualizarUsuario = await knex('usuarios')
+            .where({ id })
+            .update({
+                nome,
+                email,
+                senha: senhaCriptografada,
+            })
+            .returning(['id', 'nome', 'email']);
+
+        return res.status(200).send(atualizarUsuario);
     } catch (error) {
         return res.status(500).json({ mensagem: 'Erro interno do Servidor!' });
     }
