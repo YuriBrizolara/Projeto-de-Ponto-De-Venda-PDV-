@@ -1,4 +1,5 @@
 const aws = require('aws-sdk');
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 
 const endpoint = new aws.Endpoint(process.env.ENDPOINT_S3);
 

@@ -31,6 +31,7 @@ const schemaCadastroUsuario = require('../validacoes/schemaCadastroUsuario');
 const schemaLogin = require('../validacoes/schemaLogin');
 const schemaCliente = require('../validacoes/schemaCliente');
 const schemaProduto = require('../validacoes/schemaProduto');
+const schemaPedido = require('../validacoes/schemaPedido');
 const {
     validarCorpo,
     verificarToken,
@@ -40,6 +41,7 @@ const validarParametroDeRota = require('../intermediarios/validarParametrosRota'
 const multer = require('../intermediarios/multer');
 const validarCpf_Email = require('../intermediarios/validarCpf');
 const validarCategoria = require('../intermediarios/validarCategoria');
+const validarPedido = require('../intermediarios/validarPedido')
 
 const rotas = express.Router();
 
@@ -97,5 +99,10 @@ rotas.delete(
 );
 
 rotas.get('/pedido', listarPedidos);
+rotas.post('/pedido',
+    validarCorpo(schemaPedido),
+    validarPedido,
+    cadastrarPedidos
+);
 
 module.exports = rotas;
