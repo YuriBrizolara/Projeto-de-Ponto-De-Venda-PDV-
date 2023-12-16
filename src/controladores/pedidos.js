@@ -20,6 +20,9 @@ const listarPedidos = async (req, res) => {
 
             return res.status(200).json(pedidosEncontrados[0]);
         }
+        if (cliente_id && isNaN(cliente_id)) {
+            return res.status(400).json({ mensagem: 'Numero de id invalido!' });
+        }
         const pedidoCliente = await knex('pedidos')
             .select('*')
             .where({ cliente_id });
@@ -52,34 +55,36 @@ const cadastrarPedidos = async (req, res) => {
     const { cliente_id, observacao, pedido_produtos } = req.body;
     const valor = 0;
     try {
-
         const novoPedido = await knex('pedidos')
             .insert({
                 cliente_id,
                 observacao,
-                valor
+                valor,
             })
             .returning('*');
 
         for (let item of pedido_produtos) {
-            const valorProduto = await knex('produtos').select('valor').where('id', item.produto_id).first();
-            const novoProdutos = await knex('pedido_produtos').insert({
-                pedido_id: novoPedido[0].id,
-                produto_id: item.produto_id,
-                quantidade_produto: item.quantidade_produto,
-                valor_produto: valorProduto
-            }).returning('*');
+            const valorProduto = await knex('produtos')
+                .select('valor')
+                .where('id', item.produto_id)
+                .first();
+            const novoProdutos = await knex('pedido_produtos')
+                .insert({
+                    pedido_id: novoPedido[0].id,
+                    produto_id: item.produto_id,
+                    quantidade_produto: item.quantidade_produto,
+                    valor_produto: valorProduto,
+                })
+                .returning('*');
             valor += valorProduto * item.quantidade_produto;
         }
         const atualizarValor = await knex('pedidos')
             .where('id', novoPedido[0].id)
             .update({ valor_total: valor })
             .returning('*');
-
-
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do pedido');
-
+        return res.status(400).json('Erro ao efetuar o cadastro do pedido');
     }
 };
 
