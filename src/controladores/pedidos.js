@@ -1,4 +1,5 @@
 const knex = require('../conexão');
+const send = require('../nodeMailerConfig');
 
 const listarPedidos = async (req, res) => {
     const { cliente_id } = req.query;
@@ -50,7 +51,7 @@ const listarPedidos = async (req, res) => {
 
 const cadastrarPedidos = async (req, res) => {
     const { cliente_id, observacao, pedido_produtos } = req.body;
-    const valor = 0;
+    let valor = 0;
     try {
 
         const novoPedido = await knex('pedidos')
@@ -60,7 +61,6 @@ const cadastrarPedidos = async (req, res) => {
                 valor_total: valor
             })
             .returning('*');
-
         for (let item of pedido_produtos) {
             const valorProduto = await knex('produtos').select('*').where('id', item.produto_id).first();
             const novoProdutos = await knex('pedido_produtos').insert({
@@ -78,15 +78,9 @@ const cadastrarPedidos = async (req, res) => {
         const enviarEmail = await knex('clientes').select('email')
             .where({ id: cliente_id })
             .first();
-        const send = (to, subject) => {
-            transporter.sendMail({
-                fron:process.env.MAIL_FROM,
-                to:enviarEmail,
-                subject:"Cadastro de pedido",
-                text:"Seu pedido foi cadastrado com sucesso"
-            })
-        };
-
+        const emailString = enviarEmail.email.toString();
+        send(emailString,"Cadastro de pedido","Seu pedido foi cadastrado com sucesso")
+        return res.status(201).json('Pedido cadastrado');
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do pedido');
 

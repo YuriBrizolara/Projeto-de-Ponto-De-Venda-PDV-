@@ -1,4 +1,3 @@
-// const { S3 } = require('aws-sdk');
 const knex = require('../conexão');
 const { encontrarProduto } = require('../utilitarios/utilitarioProduto');
 const { uploadArquivo, excluirArquivo } = require('../utilitarios/s3');
@@ -84,7 +83,6 @@ const excluirProduto = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json(error.message);
-        // return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
 const cadastrarProduto = async (req, res) => {
