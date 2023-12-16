@@ -95,7 +95,6 @@ const cadastrarPedidos = async (req, res) => {
         return res.status(201).json('Pedido cadastrado');
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do pedido');
-        return res.status(400).json('Erro ao efetuar o cadastro do pedido');
     }
 };
 
