@@ -10,25 +10,38 @@ const schemaPedido = joi.object({
 
     observacao: joi.string().allow(null, ''),
 
-    pedido_produtos: joi.array().items(
-        joi.object({
-            produto_id: joi.number().required().positive().message({
-                'any.required': 'O campo ID de Produto é obrigatório',
-                'number.base': 'O campo ID de Produto é obrigatório',
-                'number.integer': 'Insira um ID de Produto valido',
-                'number.positive': 'Insira um ID de Produto valido',
-            }),
+    pedido_produtos: joi
+        .array()
+        .items(
+            joi.object({
+                produto_id: joi
+                    .number()
+                    .required()
+                    .integer()
+                    .positive()
+                    .invalid(NaN)
+                    .message({
+                        'any.required': 'O campo ID de Produto é obrigatório',
+                        'number.base': 'O campo ID de Produto é obrigatório',
+                        'number.integer': 'Insira um ID de Produto valido',
+                        'number.positive': 'Insira um ID de Produto valido',
+                        'number.invalid': 'Insira um ID de Produto válido',
+                    }),
 
-            quantidade_produto: joi.number().required().positive().message({
-                'any.required': 'O campo Quantidade é obrigatório',
-                'number.base': 'O campo Quantidade é obrigatório',
-                'number.integer': 'Insira uma Quantidade valido',
-                'number.positive': 'Insira uma Quantidade valido',
+                quantidade_produto: joi.number().required().positive().message({
+                    'any.required': 'O campo Quantidade é obrigatório',
+                    'number.base': 'O campo Quantidade é obrigatório',
+                    'number.integer': 'Insira uma Quantidade valido',
+                    'number.positive': 'Insira uma Quantidade valido',
+                }),
             })
-        })
-    ).min(1).required().messages({
-        'any.required': 'Nescessario informar produtos para o cadastro do pedido'
-    })
+        )
+        .min(1)
+        .required()
+        .messages({
+            'any.required':
+                'Nescessario informar produtos para o cadastro do pedido',
+        }),
 });
 
 module.exports = schemaPedido;

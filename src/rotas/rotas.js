@@ -41,7 +41,7 @@ const validarParametroDeRota = require('../intermediarios/validarParametrosRota'
 const multer = require('../intermediarios/multer');
 const validarCpf_Email = require('../intermediarios/validarCpf');
 const validarCategoria = require('../intermediarios/validarCategoria');
-const validarPedido = require('../intermediarios/validarPedido')
+const validarPedido = require('../intermediarios/validarPedido');
 
 const rotas = express.Router();
 
@@ -99,8 +99,9 @@ rotas.delete(
 );
 
 rotas.get('/pedido', listarPedidos);
-rotas.post('/pedido',
-    validarCorpo(schemaPedido),
+rotas.post(
+    '/pedido',
+    validarCorpo(schemaPedido, { debug: true }),
     validarPedido,
     cadastrarPedidos
 );
