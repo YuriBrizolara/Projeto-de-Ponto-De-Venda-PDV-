@@ -75,7 +75,17 @@ const cadastrarPedidos = async (req, res) => {
             .where('id', novoPedido[0].id)
             .update({ valor_total: valor })
             .returning('*');
-
+        const enviarEmail = await knex('clientes').select('email')
+            .where({ id: cliente_id })
+            .first();
+        const send = (to, subject) => {
+            transporter.sendMail({
+                fron:process.env.MAIL_FROM,
+                to:enviarEmail,
+                subject:"Cadastro de pedido",
+                text:"Seu pedido foi cadastrado com sucesso"
+            })
+        };
 
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do pedido');
