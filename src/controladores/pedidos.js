@@ -57,19 +57,19 @@ const cadastrarPedidos = async (req, res) => {
             .insert({
                 cliente_id,
                 observacao,
-                valor
+                valor_total: valor
             })
             .returning('*');
 
         for (let item of pedido_produtos) {
-            const valorProduto = await knex('produtos').select('valor').where('id', item.produto_id).first();
+            const valorProduto = await knex('produtos').select('*').where('id', item.produto_id).first();
             const novoProdutos = await knex('pedido_produtos').insert({
                 pedido_id: novoPedido[0].id,
                 produto_id: item.produto_id,
                 quantidade_produto: item.quantidade_produto,
-                valor_produto: valorProduto
+                valor_produto: valorProduto.valor
             }).returning('*');
-            valor += valorProduto * item.quantidade_produto;
+            valor += (valorProduto.valor * item.quantidade_produto);
         }
         const atualizarValor = await knex('pedidos')
             .where('id', novoPedido[0].id)
