@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.MAIL_PASS,
     },
 });
-const send = (to, subject, text, next) => {
+const send = (to, subject, text) => {
     transporter.sendMail(
         {
             from: process.env.MAIL_FROM,
@@ -16,7 +16,7 @@ const send = (to, subject, text, next) => {
             subject,
             text,
         },
-        (res, error) => {
+        (res, error, next) => {
             if (error) {
                 return res.status(400).json('Erro ao enviar o email');
             } else {
