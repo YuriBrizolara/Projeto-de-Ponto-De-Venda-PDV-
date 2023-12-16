@@ -24,7 +24,6 @@ const verificarToken = async (req, res, next) => {
 const validarCorpo = (schema) => async (req, res, next) => {
     try {
         await schema.validateAsync(req.body);
-        console.log(schema.describe());
 
         next();
     } catch (error) {

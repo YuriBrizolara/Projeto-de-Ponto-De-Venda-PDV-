@@ -20,7 +20,7 @@ const schemaPedido = joi.object({
                     .integer()
                     .positive()
                     .invalid(NaN)
-                    .message({
+                    .messages({
                         'any.required': 'O campo ID de Produto é obrigatório',
                         'number.base': 'O campo ID de Produto é obrigatório',
                         'number.integer': 'Insira um ID de Produto valido',
@@ -28,12 +28,16 @@ const schemaPedido = joi.object({
                         'number.invalid': 'Insira um ID de Produto válido',
                     }),
 
-                quantidade_produto: joi.number().required().positive().message({
-                    'any.required': 'O campo Quantidade é obrigatório',
-                    'number.base': 'O campo Quantidade é obrigatório',
-                    'number.integer': 'Insira uma Quantidade valido',
-                    'number.positive': 'Insira uma Quantidade valido',
-                }),
+                quantidade_produto: joi
+                    .number()
+                    .required()
+                    .positive()
+                    .messages({
+                        'any.required': 'O campo Quantidade é obrigatório',
+                        'number.base': 'O campo Quantidade é obrigatório',
+                        'number.integer': 'Insira uma Quantidade valido',
+                        'number.positive': 'Insira uma Quantidade valido',
+                    }),
             })
         )
         .min(1)
