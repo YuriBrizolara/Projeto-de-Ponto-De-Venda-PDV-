@@ -90,9 +90,9 @@ const cadastrarPedidos = async (req, res) => {
         send(
             emailString,
             'Cadastro de pedido',
-            'Seu pedido foi cadastrado com sucesso'
+            'Seu pedido foi cadastrado com sucesso',
+            res.status(201).json('Pedido cadastrado')
         );
-        return res.status(201).json('Pedido cadastrado');
     } catch (error) {
         return res.status(400).json('Erro ao efetuar o cadastro do pedido');
     }
