@@ -94,7 +94,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 
 | Descrição                           |
 | :---------------------------------- |
-| Essa é a rota que permite o usuário logado cadastrar um novo produto no sistema. São obrigatórios descrição, quantidade estoque, valor, categoria id|
+| Essa é a rota que permite o usuário logado cadastrar um novo produto no sistema. São obrigatórios descrição, quantidade estoque, valor, categoria id. Foi adicionado a possibilidade de vincular uma imagem a um produto.|
 
 #### Editar dados do produto
 
@@ -105,7 +105,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 
 | Descrição                           |
 | :---------------------------------- |
-| Essa é a rota que permite o usuário logado a atualizar as informações de um produto cadastrado. São obrigatórios descrição, quantidade estoque, valor, categoria id|
+| Essa é a rota que permite o usuário logado a atualizar as informações de um produto cadastrado. São obrigatórios descrição, quantidade estoque, valor, categoria id. Foi adicionado a possibilidade de vincular uma imagem a um produto. |
 
 #### Listar Produtos
 
@@ -149,7 +149,7 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 
 | Descrição                           |
 | :---------------------------------- |
-| Essa é a rota que será chamada quando o usuário logado quiser deletar apenas um produto.|
+| Essa é a rota que será chamada quando o usuário logado quiser deletar apenas um produto.Foi aplicada uma regra de negócio que não permitirá exclusão de produto que tenha sido registrado em algum pedido.|
 
 #### Cadastrar Cliente
 
@@ -194,6 +194,26 @@ https://motionless-blue-chinchilla.cyclic.app/categoria
 | Descrição                           |
 | :---------------------------------- |
 | Essa é a rota que será chamada quando o usuário logado quiser obter um de seus clientes cadastrados.|
+
+#### Cadastrar Pedido
+
+#### `POST` `/pedido`
+<https://motionless-blue-chinchilla.cyclic.app/pedido>
+
+<img src="https://github.com/YuriBrizolara/ForestKey/assets/141869821/abbb2cc7-cc2f-487d-aefe-4933cbad8ae6" width="1500" />
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será utilizada para cadastrar um novo pedido no sistema.Quando cadastro for concluído sera enviado um e-mail para o cliente.|
+
+#### Listar dos os pedidos
+
+#### `GET` `/pedido`
+<https://motionless-blue-chinchilla.cyclic.app/pedido>
+
+| Descrição                           |
+| :---------------------------------- |
+| Essa é a rota que será chamada quando o usuário logado quiser listar todos os pedidos cadastrados.|
 
 ## Autores
 
