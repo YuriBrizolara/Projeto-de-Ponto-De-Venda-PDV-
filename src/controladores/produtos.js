@@ -34,9 +34,7 @@ const listarProdutos = async (req, res) => {
 
         return res.status(200).json(produtoCategoria);
     } catch (error) {
-        return res.status(500).json(
-            { mensagem: 'Erro interno do servidor' }
-        );
+        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
     }
 };
 
@@ -90,6 +88,18 @@ const cadastrarProduto = async (req, res) => {
     const arquivo = req.file;
 
     try {
+        if (!arquivo) {
+            const adicionarProduto = await knex('produtos')
+                .insert({
+                    descricao,
+                    quantidade_estoque,
+                    valor,
+                    categoria_id,
+                })
+                .returning('*');
+
+            return res.status(201).json(adicionarProduto[0]);
+        }
         const produto_imagem = await uploadArquivo(
             arquivo.originalname,
             arquivo.buffer,
@@ -116,6 +126,18 @@ const editarProduto = async (req, res) => {
     const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
     const arquivo = req.file;
     try {
+        if (!arquivo) {
+            const adicionarProduto = await knex('produtos')
+                .insert({
+                    descricao,
+                    quantidade_estoque,
+                    valor,
+                    categoria_id,
+                })
+                .returning('*');
+
+            return res.status(201).json(adicionarProduto[0]);
+        }
         await encontrarProduto(req, res);
         const produto_imagem = await uploadArquivo(
             arquivo.originalname,
